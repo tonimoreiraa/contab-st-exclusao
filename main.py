@@ -21,23 +21,24 @@ def edit_docx_table(
     if changes:
         for (row_idx, col_idx), new_text in changes.items():
             try:
-                cell = table.cell(row_idx - row_minus, col_idx)
+                cell = table.cell(row_idx - row_minus, col_idx + 1)
                 cell.text = str(new_text)
             except IndexError:
                 table_index = table_index + 1
                 table = doc.tables[table_index]
                 row_minus = row_minus + row_idx
-                cell = table.cell(row_idx - row_minus, col_idx)
+                cell = table.cell(row_idx - row_minus, col_idx + 1)
                 cell.text = str(new_text)
 
-                print(f"Warning: Cell ({row_idx}, {col_idx}) not found")
+                print(f"Warning: Cell ({row_idx}, {col_idx + 1}) not found")
     
     # Save the modified document
     doc.save(output_path)
 
 def get_csv_data(input_path, delimiter = ';'):
     df = pd.read_csv(input_path, delimiter=delimiter)
-    data_rows = df.values.tolist()
+    data_rows = [list(df)] + df.values.tolist()
+    print(data_rows)
     return data_rows
 
 # Example usage
@@ -47,7 +48,7 @@ if __name__ == "__main__":
     csv_data = get_csv_data('input.csv')
     for row in range(0, len(csv_data)):
         for col in range(0, len(csv_data[row])):
-            changes[(row + 5, col)] = csv_data[row][col]
+            changes[(row + 4, col)] = csv_data[row][col]
 
     edit_docx_table(
         input_path="input.docx",
