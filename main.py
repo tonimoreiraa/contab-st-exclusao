@@ -47,7 +47,7 @@ if __name__ == "__main__":
     csv_data = get_csv_data('input.csv')
     for row in range(0, len(csv_data)):
         for col in range(0, len(csv_data[row])):
-            changes[(row + 3, col)] = csv_data[row][col]
+            changes[(row + 5, col)] = csv_data[row][col]
 
     edit_docx_table(
         input_path="input.docx",
